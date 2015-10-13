@@ -174,7 +174,14 @@ function muriPagination() {
 
 }
 
-
+function getHeaderSearch(){
+    $html = '<form role="search" method="get" class="searchbox" action="'.home_url( '/' ).'">
+                <input type="search" placeholder="'.esc_attr_x( 'Search …', 'muri' ).'" name="search" class="searchbox-input" onkeyup="buttonUp();" required>
+                <input type="submit" class="searchbox-submit" value="'.esc_attr_x( 'GO', 'muri' ).'" />
+                <span class="searchbox-icon"><i class="fa fa-search"></i></span>
+            </form>';
+    return $html;
+}
 
 
 // Add Shortcode

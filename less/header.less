@@ -13,7 +13,7 @@ body{
 a{
   color:@base_black;
   text-decoration: none;
-  &:hover{
+  &:hover,&:visited{
     color: @primary_color;
     text-decoration: none;
   }
@@ -751,11 +751,19 @@ a{
 .navigation li {
   display: inline;
 }
-.heading-404{
+
+.search{
   text-align: center;
-  padding: 20px 0;
-  font-size: 50px;
-  color: @primary_color;
+  margin: 40px 0;
+  input[type="text"]{
+    padding: 12px 20px;
+    border-radius: 0;
+  }
+}
+.search-page{
+  text-align: left;
+  margin: 30px 0 10px 0;
+  border-bottom: 1px solid @border;
 }
 .navigation li a,
 .navigation li a:hover,

@@ -10,22 +10,19 @@
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<header class="entry-header">
-		<?php the_title( sprintf( '<h2 class="entry-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h2>' ); ?>
+    <div class="search-page">
+        <h2 class="post-title">
+            <a href="<?php the_permalink();?>">
+                <?php the_title();?>
+            </a>
+        </h2>
+        <p class="post-desc">
+            <?php echo excerpt(40);?>
+        </p>
+        <p>
+            <a href="<?php the_permalink();?>" class="btn btn-default btn-txt"><i class="fa fa-long-arrow-right"></i><?php _e('LEARN MORE','muri');?></a>
+        </p>
+    </div>
 
-		<?php if ( 'post' === get_post_type() ) : ?>
-		<div class="entry-meta">
-			<?php muri_posted_on(); ?>
-		</div><!-- .entry-meta -->
-		<?php endif; ?>
-	</header><!-- .entry-header -->
-
-	<div class="entry-summary">
-		<?php the_excerpt(); ?>
-	</div><!-- .entry-summary -->
-
-	<footer class="entry-footer">
-		<?php muri_entry_footer(); ?>
-	</footer><!-- .entry-footer -->
 </article><!-- #post-## -->
 

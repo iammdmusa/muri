@@ -1,12 +1,9 @@
-<?php
-    if(is_404()){
-
-    }else{?>
-        <form role="search" method="get" class="searchbox" action="<?php echo home_url( '/' ); ?>">
-            <input type="search" placeholder="<?php echo esc_attr_x( 'Search …', 'muri' ) ?>" name="search" class="searchbox-input" onkeyup="buttonUp();" required>
-            <input type="submit" class="searchbox-submit" value="<?php echo esc_attr_x( 'GO', 'muri' ) ?>" />
-            <span class="searchbox-icon"><i class="fa fa-search"></i></span>
-        </form><?php
-
-    }
-?>
+<div class="search">
+    <form role="search" method="get" id="searchform" class="searchform" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+        <div class="row">
+            <label class="screen-reader-text" for="s"><?php _x( 'Search for:', 'label' ); ?></label>
+            <input type="text" class="" value="<?php echo get_search_query(); ?>" name="s" id="s" />
+            <input type="submit" class="btn-comment" id="searchsubmit" value="<?php echo esc_attr_x( 'Search', 'submit button' ); ?>" />
+        </div>
+    </form>
+</div>

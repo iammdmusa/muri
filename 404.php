@@ -13,9 +13,20 @@ get_header(); ?>
     <div class="container">
         <div class="col-xs-12 col-sm-12 col-md-8 post-content">
             <section class="error-404 not-found">
-                <div class="heading-404">
-                   404!
-                </div>
+                <header class="page-header">
+
+                    <h1 class="page-title"><i class="fa fa-tripadvisor"></i>
+                        <?php
+                            esc_html_e( 'ps! That page can&rsquo;t be found.', 'muri' );
+                        ?>
+                    </h1>
+                </header><!-- .page-header -->
+                <div class="page-content">
+                    <p><?php esc_html_e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'muri' ); ?></p>
+
+                    <?php get_search_form(); ?>
+
+                </div><!-- .page-content -->
             </section><!-- .error-404 -->
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4">

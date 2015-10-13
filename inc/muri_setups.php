@@ -65,10 +65,14 @@ if ( ! function_exists( 'muri_setup' ) ) :
          */
         add_theme_support( 'post-formats', array(
             'aside',
-            'image',
-            'video',
-            'quote',
+            'gallery',
             'link',
+            'image',
+            'quote',
+            'status',
+            'video',
+            'audio',
+            'chat',
         ) );
 
         // Set up the WordPress core custom background feature.

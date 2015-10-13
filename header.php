@@ -104,7 +104,7 @@
                         </div><!-- /.navbar-collapse -->
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-4">
-                       <?php get_search_form();?>
+                       <?php echo getHeaderSearch();?>
                     </div>
                 </div>
             </div>
