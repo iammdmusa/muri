@@ -38,6 +38,7 @@ get_header(); ?>
                         ?>
 
                     <?php endwhile; ?>
+                    <?php muriPagination(); ?>
 
                 <?php else : ?>
 

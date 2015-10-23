@@ -25,31 +25,26 @@
         <header id="header">
             <div class="top-header">
                 <div class="container">
-                    <div class="col-xs-12 col-sm-12 col-md-8">
+                    <div class="col-xs-12 col-sm-12 col-md-9">
+                        <?php
+                            $srcoll_txt = getMuriOptions('muri_scroll_txt','muri_general');
+                            $srcoll_amount = getMuriOptions('muri_scroll_amount','muri_general');
+                            $srcoll_direction = getMuriOptions('muri_scroll_direction','muri_general');
+                        ?>
                         <div class="breaking-txt">
                             <div class="bn-title">
-                                <h2>Breaking News</h2>
+                                <h2><?php _e('Breaking News','muri')?></h2>
                                 <span></span>
                             </div>
-                            <marquee behavior="scroll" scrollamount="2" direction="left" width="350">
-                                Welcome the Muri Online Newspaper Themes
+                            <marquee behavior="scroll" scrollamount="<?php echo esc_attr($srcoll_amount)?>" direction="<?php echo esc_attr($srcoll_direction);?>">
+                                <?php echo esc_html($srcoll_txt)?>
                             </marquee>
                         </div>
+
                         <!-- /.breaking-txt -->
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-4">
-                        <ul class="list-inline social-icons text-right">
-                            <li><a href="#"><i class="fa fa-facebook"></i></a>
-                            </li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a>
-                            </li>
-                            <li><a href="#"><i class="fa fa-linkedin"></i></a>
-                            </li>
-                            <li><a href="#"><i class="fa fa-google-plus"></i></a>
-                            </li>
-                            <li><a href="#"><i class="fa fa-pinterest-p"></i></a>
-                            </li>
-                        </ul>
+                    <div class="col-xs-12 col-sm-12 col-md-3">
+                        <?php getSocialProfileLink();?>
                         <!-- /.social-top -->
                     </div>
                 </div>
@@ -59,14 +54,14 @@
             <div class="logo">
                 <div class="container">
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-3">
-                            <a href="#">
-                                <img src="img/logo.png" class="img-responsive" alt=""/>
+                        <div id="logo" class="col-xs-12 col-sm-12 col-md-3">
+                            <a href="<?php echo home_url('/')?>">
+                                <img src=" <?php echo getMuriOptions('muri_logo','muri_general');?>" class="img-responsive" alt=""/>
                             </a>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-offset-2 col-md-7">
-                            <a href="#">
-                                <img src="img/banner-top.png" class="img-responsive" alt=""/>
+                        <div id="adds" class="col-xs-12 col-sm-12 col-md-offset-2 col-md-7">
+                            <a href="<?php echo getMuriOptions('muri_add_link','muri_adds');?>">
+                                <img src="<?php echo getMuriOptions('muri_add_img','muri_adds');?>" class="img-responsive" alt=""/>
                             </a>
                         </div>
                     </div>
@@ -92,7 +87,7 @@
                             wp_nav_menu( array(
                                     'menu'              => 'primary',
                                     'theme_location'    => 'primary',
-                                    'depth'             => 6,
+                                    'depth'             => 10,
                                     'container'         => 'ul',
                                     'container_class'   => 'navbar-collapse collapse',
                                     'container_id'      => 'navbar-collapse-1',

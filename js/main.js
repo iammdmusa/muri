@@ -20,19 +20,7 @@ jQuery(document).ready(function($) {
         itemsDesktopSmall : [979,3]
 
     });
-    jQuery("#owl-gallery").owlCarousel({
-        navigation : true, // Show next and prev buttons
-        slideSpeed : 300,
-        paginationSpeed : 400,
-        singleItem:true
-        // "singleItem:true" is a shortcut for:
-        // items : 1,
-        // itemsDesktop : false,
-        // itemsDesktopSmall : false,
-        // itemsTablet: false,
-        // itemsMobile : false
 
-    });
 
     var submitIcon = jQuery('.searchbox-icon');
     var inputBox = jQuery('.searchbox-input');
@@ -55,12 +43,12 @@ jQuery(document).ready(function($) {
     searchBox.mouseup(function(){
         return false;
     });
-        jQuery(document).mouseup(function(){
-            if(isOpen == true){
-                jQuery('.searchbox-icon').css('display','block');
-                submitIcon.click();
-            }
-        });
+    jQuery(document).mouseup(function(){
+        if(isOpen == true){
+            jQuery('.searchbox-icon').css('display','block');
+            submitIcon.click();
+        }
+    });
 
     function buttonUp(){
         var inputVal = jQuery('.searchbox-input').val();
@@ -95,26 +83,3 @@ jQuery(document).ready(function($) {
 
 
 }(jQuery));
-// Place any jQuery/helper plugins in here.
-jQuery(document).ready(function($) {
-    $(document).on("click", ".upload_image_button", function() {
-
-        jQuery.data(document.body, 'prevElement', $(this).prev());
-
-        window.send_to_editor = function(html) {
-            var imgurl = jQuery('img',html).attr('src');
-            var inputText = jQuery.data(document.body, 'prevElement');
-
-            if(inputText != undefined && inputText != '')
-            {
-                inputText.val(imgurl);
-            }
-
-            tb_remove();
-        };
-
-        tb_show('', 'media-upload.php?type=image&TB_iframe=true');
-        return false;
-    });
-});
-

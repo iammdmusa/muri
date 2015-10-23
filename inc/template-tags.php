@@ -57,21 +57,27 @@ function muri_entry_footer() {
     $linkedin_profile = get_the_author_meta( 'linkedin_profile' );
     $pinterest_profile = get_the_author_meta( 'pinterest_profile' );
 
+    $web = '';
     if(!empty($author_site)){
         $web = '<li><a href="'.esc_url($author_site).'"><i class="fa fa-link"></i></i></a></li>';
     }
+    $fb = '';
     if(!empty($facebook_profile)){
         $fb = '<li><a href="'.esc_url($facebook_profile).'"><i class="fa fa-facebook"></i></a></li>';
     }
+    $tw= '';
     if(!empty($twitter_profile)){
         $tw = '<li><a href="'.esc_url($twitter_profile).'"><i class="fa fa-twitter"></i></a></li>';
     }
+    $gplus= '';
     if(!empty($google_profile)){
         $gplus = '<li><a href="'.esc_url($google_profile).'"><i class="fa fa-google-plus"></i></a></li>';
     }
+    $in = '';
     if(!empty($linkedin_profile)){
         $in = '<li><a href="'.esc_url($linkedin_profile).'"><i class="fa fa-linkedin"></i></a></li>';
     }
+    $pin = '';
     if(!empty($pinterest_profile)){
         $pin = ' <li><a href="'.esc_url($pinterest_profile).'"><i class="fa fa-pinterest-p"></i></a></li>';
     }
@@ -183,7 +189,7 @@ function muri_related_tag_posts(){
                                         'tag__in' => $tag_ids,
                                         'post__not_in' => array($post->ID),
                                         'posts_per_page' => 3,
-                                        'caller_get_posts' => 1,
+                                        'ignore_sticky_posts' => 1,
                                     );
                                     $loop = new WP_Query($args);
                                     while ( $loop->have_posts() ): $loop->the_post();

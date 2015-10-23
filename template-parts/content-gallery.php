@@ -56,12 +56,14 @@
                 $img = array();
             ?>
             <!-- content -->
-            <div class="row">
+            <div class="row gallery">
                 <?php
                     foreach ($imgArray as $imgSrcId => $imgUrl) {
                         $imgSrcId = wp_get_attachment_image_src($imgUrl, 'full');
-                        $html = '<div class="col-xs-12 col-sm-12 col-md-4">
-                                    <img src="'.$imgSrcId[0].'" alt="" class="img-responsive">
+                        $html = '<div class="img-gallery">
+                                    <a class="image-link" href="'.$imgSrcId[0].'">
+                                        <img src="'.$imgSrcId[0].'" alt="" class="img-responsive">
+                                    </a>
                                 </div>';
                         echo $html;
                     }

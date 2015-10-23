@@ -11,6 +11,34 @@ function muri_content_width() {
 }
 add_action( 'after_setup_theme', 'muri_content_width', 0 );
 
+
+function getSocialProfileLink(){
+    $fb = getMuriOptions('muri_social_fb','muri_social');
+    $tw = getMuriOptions('muri_social_tw','muri_social');
+    $link = getMuriOptions('muri_social_link','muri_social');
+    $gplus = getMuriOptions('muri_social_gplus','muri_social');
+    $pin = getMuriOptions('muri_social_pin','muri_social');
+
+    $html =  '<ul class="list-inline social-icons text-right">';
+        if(!empty($fb)){
+            $html .= '<li><a href="'.$fb.'"><i class="fa fa-facebook"></i></a></li>';
+        }
+        if(!empty($tw)){
+            $html .= '<li><a href="'.$tw.'"><i class="fa fa-twitter"></i></a></li>';
+        }
+        if(!empty($link)){
+            $html .= '<li><a href="'.$link.'"><i class="fa fa-linkedin"></i></a></li>';
+        }
+        if(!empty($gplus)){
+            $html .= '<li><a href="'.$gplus.'"><i class="fa fa-google-plus"></i></a></li>';
+        }
+        if(!empty($pin)){
+            $html .= '<li><a href="'.$pin.'"><i class="fa fa-pinterest-p"></i></a></li>';
+        }
+    $html .= '</ul>';
+    echo $html;
+}
+
 add_filter( 'comment_form_default_fields', 'muri_comment_form_fields' );
 function muri_comment_form_fields( $fields ) {
     $commenter = wp_get_current_commenter();
@@ -176,298 +204,13 @@ function muriPagination() {
 
 function getHeaderSearch(){
     $html = '<form role="search" method="get" class="searchbox" action="'.home_url( '/' ).'">
-                <input type="search" placeholder="'.esc_attr_x( 'Search …', 'muri' ).'" name="search" class="searchbox-input" onkeyup="buttonUp();" required>
-                <input type="submit" class="searchbox-submit" value="'.esc_attr_x( 'GO', 'muri' ).'" />
+                <input type="search" placeholder="'.esc_attr_x( 'Search …', 'label','muri' ).'" name="search" class="searchbox-input" onkeyup="buttonUp();" required>
+                <input type="submit" class="searchbox-submit" value="'.esc_attr_x( 'GO', 'submit button','muri' ).'" />
                 <span class="searchbox-icon"><i class="fa fa-search"></i></span>
             </form>';
     return $html;
 }
 
-
-// Add Shortcode
-function muri_postSlider( $atts ) {
-
-    // Attributes
-    extract( shortcode_atts(
-            array(
-                'cat_name' => 'slide',
-                'slide_limit' => '4',
-            ), $atts )
-    );
-
-    $output  = '<div class="featured-post">';
-        $output .= '<div id="owl-featured-post" class="owl-carousel owl-theme">';
-        $args = array( 'post_type' => 'post', 'category_name' => $cat_name ,'posts_per_page' =>$slide_limit, 'order' => 'DESC' );
-        $loop = new WP_Query( $args );
-        global $post;
-        while ( $loop->have_posts() ) : $loop->the_post();
-            if (has_post_thumbnail( $post->ID ) ) {
-                $image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'slide');
-            }else{
-                $image[0] = 'http://placehold.it/730x450';
-            }
-            $output .= '<div class="item">
-                            <img src="'.$image[0].'" alt="'.get_the_title($post->ID).'" >
-                            <div class="featured-post-text">
-                                <a href="'.get_the_permalink($post->ID).'">
-                                    <h3 class="text-center">'.get_the_title($post->ID).'</h3>
-                                </a>
-                                <a href="'.get_the_permalink($post->ID).'" class="btn btn-default btn-round-brd">'.__('LEARN MORE','muri').'</a>
-                            </div>
-                        </div>';
-        endwhile;
-        wp_reset_query();wp_reset_postdata();
-        $output .= '</div>';
-    $output .= '</div>';
-
-    return $output;
-}
-add_shortcode( 'post_slider', 'muri_postSlider' );
-
-function muri_CatPost($atts){
-    extract( shortcode_atts(
-            array(
-                'title' => 'Business',
-                'cat_name' => 'slide',
-                'post_limit' => '4',
-            ), $atts )
-    );
-
-    $output  = '<div class="cat-post-section">';
-        $output .= '<h2 class="cat-title">'.esc_attr($title).'</h2>';
-            $args = array( 'post_type' => 'post', 'category_name' => $cat_name ,'posts_per_page' =>$post_limit, 'order' => 'DESC' );
-            $loop = new WP_Query( $args );
-            global $post;
-            while ( $loop->have_posts() ) : $loop->the_post();
-                if (has_post_thumbnail( $post->ID ) ) {
-                    $image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'slide');
-                }else{
-                    $image[0] = 'http://placehold.it/210x210';
-                }
-                $cats = array();
-                global $post;
-                foreach(wp_get_post_categories($post->ID) as $c)
-                {
-                    $cat = get_category($c);
-                    array_push($cats,$cat->name);
-                }
-                $post_categories = '';
-                if(sizeOf($cats)>0)
-                {
-                    $post_categories = sprintf(esc_html_x('%s','post category','muri'),'<a href="'.esc_url( get_category_link( $cat->term_id ) ) .'">'.implode(',',$cats).'</a>');
-                }
-                $output .= '<div class="row item">
-                                <div class="col-xs-12 col-sm-12 col-md-4">
-                                    <img class="img-responsive" src="'.$image[0].'" alt="'.get_the_title($post->ID).'"/>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-8">
-                                    <h2 class="post-title">
-                                        <a href="'.get_the_permalink($post->ID).'">
-                                            '.get_the_title($post->ID).'
-                                        </a>
-                                    </h2>
-                                    <div class="post-meta">
-                                        <span class="author">
-                                            <i class="fa fa-user"></i>
-                                            <a href="'.esc_url(get_author_posts_url( get_the_author_meta( 'ID' ))).'">
-                                                '.esc_html( get_the_author() ).'
-                                            </a>
-                                        </span>
-                                        <span class="date">
-                                            <i class="fa fa-calendar"></i>
-                                            '.date_i18n( get_option( 'date_format' ), strtotime( '11/15-1976' ) ).'
-                                        </span>
-                                        <span class="in-cate">
-                                            <i class="fa fa-pencil"></i>
-                                            '.$post_categories.'
-                                        </span>
-                                    </div>
-                                    <p class="post-desc">
-                                        '.excerpt(20).'
-                                    </p>
-                                    <p>
-                                        <a href="'.get_the_permalink($post->ID).'" class="btn btn-default btn-txt"><i class="fa fa-long-arrow-right"></i>'.__('LEARN MORE','muri').'</a>
-                                    </p>
-                                </div>
-                            </div>';
-            endwhile;
-            wp_reset_query();wp_reset_postdata();
-
-    $output .= '</div>';
-
-    return $output;
-}
-add_shortcode('cat','muri_CatPost');
-
-function muri_CatPost_minimal($atts){
-    extract( shortcode_atts(
-            array(
-                'title' => 'Business',
-                'cat_name' => 'slide',
-                'post_limit' => '4',
-            ), $atts )
-    );
-
-    $output  = '<div class="cat-post-section">';
-    $output .= '<h2 class="cat-title-1">'.esc_attr($title).'</h2>';
-    $args = array( 'post_type' => 'post', 'category_name' => $cat_name ,'posts_per_page' =>$post_limit, 'order' => 'DESC' );
-    $loop = new WP_Query( $args );
-    global $post;
-    while ( $loop->have_posts() ) : $loop->the_post();
-        if (has_post_thumbnail( $post->ID ) ) {
-            $image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'slide');
-        }else{
-            $image[0] = 'http://placehold.it/730x450';
-        }
-        $output .= '<div class="row item minimal">
-                            <div class="col-xs-12 col-sm-12 col-md-2">
-                                <img class="img-responsive" src="'.$image[0].'" alt="'.get_the_title($post->ID).'"/>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-10">
-                                <h3 class="post-title">
-                                        <a href="'.get_the_permalink($post->ID).'">
-                                            '.get_the_title($post->ID).'
-                                        </a>
-                                    </h3>
-                                <p class="post-desc">
-                                    '.excerpt(20).'
-                                </p>
-                                <a href="'.get_the_permalink($post->ID).'" class="btn btn-default btn-txt-only"><i class="fa fa-long-arrow-right"></i>'.__('LEARN MORE','muri').'</a>
-
-                            </div>
-                        </div>';
-    endwhile;
-    wp_reset_query();wp_reset_postdata();
-
-    $output .= '</div>';
-
-    return $output;
-}
-add_shortcode('cat_minimal','muri_CatPost_minimal');
-
-function muri_CatPost_minimal_with_2cat($atts){
-    extract( shortcode_atts(
-            array(
-                'title_1' => 'Business',
-                'title_2' => 'News',
-                'cat_name_1' => 'slide',
-                'cat_name_2' => 'slide',
-                'post_limit' => '4',
-            ), $atts )
-    );
-    $output  = '<div class="cat-post-section">';
-        $output .= '<div class="row">';
-            $output .= '<div class="col-xs-12 col-sm-12 col-md-6">';
-                $output .= '<div class="cat-post-section_minimal">';
-                    $output .= '<h2 class="cat-title-1">'.$title_1.'</h2>';
-                    $args = array( 'post_type' => 'post', 'category_name' => $cat_name_1 ,'posts_per_page' =>$post_limit, 'order' => 'DESC' );
-                    $loop = new WP_Query( $args );
-                    global $post;
-                    while ( $loop->have_posts() ) : $loop->the_post();
-                        if (has_post_thumbnail( $post->ID ) ) {
-                            $image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'slide');
-                        }else{
-                            $image[0] = 'http://placehold.it/730x450';
-                        }
-                        $output .= '<div class="row item minimal">
-                                        <div class="col-xs-12 col-sm-12 col-md-4">
-                                            <img class="img-responsive" src="'.$image[0].'" alt="'.get_the_title($post->ID).'"/>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-12 col-md-8">
-                                            <h3 class="post-title">
-                                                <a href="'.get_the_permalink($post->ID).'">
-                                                    '.get_the_title($post->ID).'
-                                                </a>
-                                            </h3>
-                                            <a href="'.get_the_permalink($post->ID).'" class="btn btn-default btn-txt-only"><i class="fa fa-long-arrow-right"></i>'.__('LEARN MORE','muri').'</a>
-
-                                        </div>
-                                    </div>';
-                    endwhile;
-                    wp_reset_query();wp_reset_postdata();
-                $output .= '</div>';
-            $output .= '</div>';
-            $output .= '<div class="col-xs-12 col-sm-12 col-md-6">';
-                        $output .= '<div class="cat-post-section_minimal">';
-                        $output .= '<h2 class="cat-title-1">'.$title_2.'</h2>';
-                        $args = array( 'post_type' => 'post', 'category_name' => $cat_name_2 ,'posts_per_page' =>$post_limit, 'order' => 'DESC' );
-                        $loop = new WP_Query( $args );
-                        global $post;
-                        while ( $loop->have_posts() ) : $loop->the_post();
-                            if (has_post_thumbnail( $post->ID ) ) {
-                                $image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'slide');
-                            }else{
-                                $image[0] = 'http://placehold.it/730x450';
-                            }
-                            $output .= '<div class="row item minimal">
-                                            <div class="col-xs-12 col-sm-12 col-md-4">
-                                                <img class="img-responsive" src="'.$image[0].'" alt="'.get_the_title($post->ID).'"/>
-                                            </div>
-                                            <div class="col-xs-12 col-sm-12 col-md-8">
-                                                <h3 class="post-title">
-                                                    <a href="'.get_the_permalink($post->ID).'">
-                                                        '.get_the_title($post->ID).'
-                                                    </a>
-                                                </h3>
-                                                <a href="'.get_the_permalink($post->ID).'" class="btn btn-default btn-txt-only"><i class="fa fa-long-arrow-right"></i>'.__('LEARN MORE','muri').'</a>
-
-                                            </div>
-                                        </div>';
-                        endwhile;
-                        wp_reset_query();wp_reset_postdata();
-    $output .= '</div>';
-            $output .= '</div>';
-        $output .= '</div>';
-    $output .= '</div>';
-
-    return $output;
-}
-add_shortcode('cat_minimal_2','muri_CatPost_minimal_with_2cat');
-
-function muri_adds($atts){
-    extract( shortcode_atts(
-            array(
-                'img' => 'http://placehold.it/730x120',
-                'url' => '#',
-            ), $atts )
-    );
-    $output = ' <div class="add-section">
-                    <a href="'.esc_url($url).'">
-                        <img src="'.esc_url($img).'" class="img-responsive" alt="Muri adds"/>
-                    </a>
-                </div>';
-
-    return $output;
-}
-add_shortcode('adds','muri_adds');
-
-function muri_adds_2($atts){
-    extract( shortcode_atts(
-            array(
-                'img_1' => 'http://placehold.it/730x120',
-                'url_1' => '#',
-                'img_2' => 'http://placehold.it/730x120',
-                'url_2' => '#',
-            ), $atts )
-    );
-    $output = '<div class="add-section">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-6 p-r-0">
-                                <a href="'.esc_url($url_1).'">
-                                    <img src="'.esc_url($img_1).'" class="img-responsive" alt=""/>
-                                </a>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-6 p-l-0">
-                                <a href="'.esc_url($url_2).'">
-                                    <img class="img-responsive" src="'.esc_url($img_2).'" alt=""/>
-                                </a>
-                            </div>
-                        </div>
-                    </div>';
-
-    return $output;
-}
-add_shortcode('adds_half','muri_adds_2');
 
 function muri_stories_add_to_author_profile($contactmethods) {
 
@@ -761,7 +504,7 @@ class Muri_WidgetRecent extends WP_Widget{
                 $widget_html .= '<div id="recent-post" class="tab-pane fade in active">';
                 $args = array(
                     'post_type'  => 'post',
-                    'post_per_page' => $post_limit,
+                    'posts_per_page' => $post_limit,
                     'order' => 'DESC'
                 );
                 $loop = new WP_Query($args);
@@ -801,7 +544,6 @@ class Muri_WidgetRecent extends WP_Widget{
         else {
             $title = __( 'New title', 'lawful' );
         }
-        $post_limit = '5';
         if(isset($instance['post_limit'])) {
             $post_limit = $instance['post_limit'];
         }
@@ -827,3 +569,53 @@ class Muri_WidgetRecent extends WP_Widget{
         return $instance;
     }
 }
+
+
+add_action( 'tgmpa_register', 'mash_register_required_plugins' );
+function mash_register_required_plugins(){
+    $plugins = array(
+        array(
+            'name'               => 'Shortcode Composer', // The plugin name.
+            'slug'               => 'shortcode-composer', // The plugin slug (typically the folder name).
+            'source'             => get_stylesheet_directory() . '/inc/plugins/shortcode-composer.zip', // The plugin source.
+            'required'           => true, // If false, the plugin is only 'recommended' instead of required.
+            'version'            => '', // E.g. 1.0.0. If set, the active plugin must be this version or higher.
+            'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+            'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+            'external_url'       => '', // If set, overrides default API URL and points to an external URL.
+        ),
+    );
+
+    $config = array(
+        'default_path' => '',                      // Default absolute path to pre-packaged plugins.
+        'menu'         => 'tgmpa-install-plugins', // Menu slug.
+        'has_notices'  => true,                    // Show admin notices or not.
+        'dismissable'  => true,                    // If false, a user cannot dismiss the nag message.
+        'dismiss_msg'  => '',                      // If 'dismissable' is false, this message will be output at top of nag.
+        'is_automatic' => true,                   // Automatically activate plugins after installation or not.
+        'message'      => '',                      // Message to output right before the plugins table.
+        'strings'      => array(
+            'page_title'                      => __( 'Install Required Plugins', 'mash_stories' ),
+            'menu_title'                      => __( 'Install Plugins', 'mash_stories' ),
+            'installing'                      => __( 'Installing Plugin: %s', 'mash_stories' ), // %s = plugin name.
+            'oops'                            => __( 'Something went wrong with the plugin API.', 'mash_stories' ),
+            'notice_can_install_required'     => _n_noop( 'This theme requires the following plugin: %1$s.', 'This theme requires the following plugins: %1$s.','mash_stories' ), // %1$s = plugin name(s).
+            'notice_can_install_recommended'  => _n_noop( 'This theme recommends the following plugin: %1$s.', 'This theme recommends the following plugins: %1$s.','mash_stories' ), // %1$s = plugin name(s).
+            'notice_cannot_install'           => _n_noop( 'Sorry, but you do not have the correct permissions to install the %s plugin. Contact the administrator of this site for help on getting the plugin installed.', 'Sorry, but you do not have the correct permissions to install the %s plugins. Contact the administrator of this site for help on getting the plugins installed.','mash_stories' ), // %1$s = plugin name(s).
+            'notice_can_activate_required'    => _n_noop( 'The following required plugin is currently inactive: %1$s.', 'The following required plugins are currently inactive: %1$s.','mash_stories' ), // %1$s = plugin name(s).
+            'notice_can_activate_recommended' => _n_noop( 'The following recommended plugin is currently inactive: %1$s.', 'The following recommended plugins are currently inactive: %1$s.','mash_stories' ), // %1$s = plugin name(s).
+            'notice_cannot_activate'          => _n_noop( 'Sorry, but you do not have the correct permissions to activate the %s plugin. Contact the administrator of this site for help on getting the plugin activated.', 'Sorry, but you do not have the correct permissions to activate the %s plugins. Contact the administrator of this site for help on getting the plugins activated.','mash_stories' ), // %1$s = plugin name(s).
+            'notice_ask_to_update'            => _n_noop( 'The following plugin needs to be updated to its latest version to ensure maximum compatibility with this theme: %1$s.', 'The following plugins need to be updated to their latest version to ensure maximum compatibility with this theme: %1$s.','mash_stories'), // %1$s = plugin name(s).
+            'notice_cannot_update'            => _n_noop( 'Sorry, but you do not have the correct permissions to update the %s plugin. Contact the administrator of this site for help on getting the plugin updated.', 'Sorry, but you do not have the correct permissions to update the %s plugins. Contact the administrator of this site for help on getting the plugins updated.','mash_stories' ), // %1$s = plugin name(s).
+            'install_link'                    => _n_noop( 'Begin installing plugin', 'Begin installing plugins','mash_stories' ),
+            'activate_link'                   => _n_noop( 'Begin activating plugin', 'Begin activating plugins','mash_stories' ),
+            'return'                          => __( 'Return to Required Plugins Installer', 'mash_stories' ),
+            'plugin_activated'                => __( 'Plugin activated successfully.', 'mash_stories' ),
+            'complete'                        => __( 'All plugins installed and activated successfully. %s', 'mash_stories' ), // %s = dashboard link.
+            'nag_type'                        => 'updated' // Determines admin notice type - can only be 'updated', 'update-nag' or 'error'.
+        )
+    );
+
+    tgmpa( $plugins, $config );
+}
+

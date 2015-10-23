@@ -23,11 +23,7 @@ function muri_scripts() {
     wp_enqueue_script( 'muri-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20130115', true );
 
     //js files
-    if(wp_script_is('jquery')) {
-        wp_enqueue_script( 'jquery' );
-    } else {
-        wp_enqueue_script('muri-jquery_js',get_template_directory_uri().'/js/vendor/jquery.1.11.1.js',array(),'',true);
-    }
+    wp_enqueue_script( 'jquery' );
 
     /*Bootstrap Main JS*/
     wp_enqueue_script('muri-js_bootstrap_min',get_template_directory_uri().'/js/bootstrap.min.js',array(),'',true);
@@ -35,7 +31,6 @@ function muri_scripts() {
     wp_enqueue_script('muri-smooth_scroll_js',get_template_directory_uri().'/js/smoothscroll.js',array(),'',true);
 
     wp_enqueue_script('muri-owl_carousel_js',get_template_directory_uri().'/js/owl.carousel.min.js',array(),'',true);
-
 
 
     /*Theme Main JS*/
